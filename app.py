@@ -252,14 +252,14 @@ def get_order(order_id):
         cursor.execute("""
             SELECT 
                 order_id,
-                o.customer_id,
-                o.total_amount,
-                o.created_at,
-                c.name AS customer_name,
-                c.email AS customer_email
-            FROM orders o
-            JOIN customers c ON o.customer_id = c.id
-            WHERE o.id = ?
+                customer_id,
+                total_amount,
+                orders.created_at,
+                name,
+                email
+            FROM orders 
+            INNER JOIN customers ON customer_id = customers.id
+            WHERE orders.id = ?
         """, (order_id,))
         row = cursor.fetchone()
 
@@ -269,16 +269,16 @@ def get_order(order_id):
         # Fetch order items
         cursor.execute("""
             SELECT 
-                oi.id,
-                oi.product_id,
-                p.name,
-                p.description,
-                p.category,
-                oi.quantity,
-                oi.price_at_purchase
-            FROM order_items oi
-            JOIN products p ON oi.product_id = p.id
-            WHERE oi.order_id = ?
+                order_items.id,
+                product_id,
+                name,
+                description,
+                category,
+                quantity,
+                price_at_purchase
+            FROM order_items 
+            INNER JOIN products ON product_id = products.id
+            WHERE order_id = ?
         """, (order_id,))
         items_rows = cursor.fetchall()
 
