@@ -7,3 +7,5 @@ venv
 *.sqlite
 
 __pycache__/
+.pyc
+.env
