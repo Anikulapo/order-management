@@ -229,7 +229,8 @@ def get_orders():
                 "created_at": row[3],
                 "items": items
             })
-
+        if len(orders) < 1:
+            return jsonify({"message":"There are no current orders"})
         return jsonify(orders), 200
 
     except Exception as e:
@@ -251,7 +252,7 @@ def get_order(order_id):
         # Fetch order with customer info
         cursor.execute("""
             SELECT 
-                order_id,
+                orders.id,
                 customer_id,
                 total_amount,
                 orders.created_at,
