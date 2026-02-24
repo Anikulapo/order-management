@@ -101,6 +101,9 @@ def create_order():
         conn = db_connection()
         cursor = conn.cursor()
 
+        # Begin transaction
+        conn.autocommit = False
+
         raw_data = request.get_json()
         if not raw_data:
             return jsonify({"message": "JSON body required"}), 400
@@ -123,9 +126,6 @@ def create_order():
             return jsonify({"message": "Customer not found"}), 404
 
         total_amount = 0
-
-        # Begin transaction
-        conn.autocommit = False
 
         # Validate products
         for item in items:
