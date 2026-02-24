@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from pydantic import ValidationError
 from schemas import CreateOrder
 from database_conn import get_db_connection_pg
+from decouple import config
 
 app = Flask(__name__)
 
@@ -364,4 +365,7 @@ def get_order(order_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    if config('ENVIRONMENT') == 'local':
+        app.run(debug=True)
+    else:
+        app.run()
